@@ -211,7 +211,9 @@ window.addEventListener('load', () => {
                     newVid.srcObject = str;
                     newVid.autoplay = true;
                     newVid.className = 'remote-video';
-
+                    if (isObserver(partnerName)) {
+                        newVid.style.display = 'none';
+                    }
                     //video controls elements
                     let controlDiv = document.createElement('div');
                     controlDiv.className = 'remote-video-controls';
@@ -303,6 +305,17 @@ window.addEventListener('load', () => {
         }
 
 
+        function isObserver(inputString) {
+            // Use a regular expression to match the value between the delimiters
+            let match = inputString.match(/_##_(.*?)_##_/);
+
+            if (match && match[1]) {
+                let value = match[1]; // Extract the value between _##_ and _##_
+                return value.toUpperCase() === 'OBSERVER';
+            }
+
+            return false; // Return false if no value is found
+        }
 
         function broadcastNewTracks(stream, type, mirrorMode = true) {
             h.setLocalStream(stream, mirrorMode);

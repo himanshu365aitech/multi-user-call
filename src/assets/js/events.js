@@ -88,9 +88,9 @@ window.addEventListener('load', () => {
         e.preventDefault();
 
         let name = document.querySelector('#username').value;
-        let role = document.querySelector('#role').value;
+        let role = document.querySelector('#assignedRoleName').value;
 
-        if (name) {
+        if (name && role) {
             //remove error message, if any
             document.querySelector('#err-msg-username').innerText = "";
 
@@ -103,7 +103,7 @@ window.addEventListener('load', () => {
         }
 
         else {
-            document.querySelector('#err-msg-username').innerText = "Please input your name";
+            document.querySelector('#err-msg-username').innerText = "Please input your name and role";
         }
     });
 
