@@ -36,10 +36,11 @@ window.addEventListener('load', () => {
 
         socket.on('connect', () => {
             //set socketId
-            socketId = socket.io.engine.id;
+            const role = sessionStorage.getItem('role')
+            socketId = socket.io.engine.id + "_##_" + role + "_##_";
             document.getElementById('randomNumber').innerText = randomNumber;
             document.getElementById('fullName').innerText = sessionStorage.getItem('username');
-            document.getElementById('roleName').innerText = sessionStorage.getItem('role');
+            document.getElementById('roleName').innerText = role;
             socket.emit('subscribe', {
                 room: room,
                 socketId: socketId
@@ -84,7 +85,7 @@ window.addEventListener('load', () => {
 
                         await pc[data.sender].setLocalDescription(answer);
 
-                        socket.emit('sdp', { description: pc[data.sender].localDescription, to: data.sender, sender: socketId });
+                        socket.emit('sdp', { description: pc[data.sender].localDescription, to: data.sender, sender: socketId, role: sessionStorage.getItem('role') });
                     }).catch((e) => {
                         console.error(e);
                     });
