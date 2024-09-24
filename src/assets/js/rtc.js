@@ -40,7 +40,6 @@ window.addEventListener('load', () => {
             document.getElementById('randomNumber').innerText = randomNumber;
             document.getElementById('fullName').innerText = sessionStorage.getItem('username');
             document.getElementById('roleName').innerText = sessionStorage.getItem('role');
-
             socket.emit('subscribe', {
                 room: room,
                 socketId: socketId
@@ -107,11 +106,25 @@ window.addEventListener('load', () => {
             h.getUserFullMedia().then((stream) => {
                 //save my stream
                 myStream = stream;
-
+                checkRoleWiseDefaults(sessionStorage.getItem('role'))
                 h.setLocalStream(stream);
             }).catch((e) => {
                 console.error(`stream error: ${e}`);
             });
+        }
+
+        function checkRoleWiseDefaults(role = "") {
+            console.log({ role: role.toUpperCase() });
+            if (role.toUpperCase() === "OBSERVER") {
+                let video = document.getElementById('toggle-video');
+                let audio = document.getElementById('toggle-mute');
+                video.style.display = 'none';
+                audio.style.display = 'none';
+                myStream.getVideoTracks()[0].enabled = false;
+                // myStream.getAudioTracks()[0].enabled = false;
+                broadcastNewTracks(myStream, 'video');
+                // broadcastNewTracks(myStream, 'audio');
+            }
         }
 
 
